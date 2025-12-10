@@ -5,9 +5,9 @@ namespace Allergies.Reactions
     public abstract class Reaction(AbstractCreature player)
     {
         protected AbstractCreature abstractPlayer = player;
-        protected Player player => abstractPlayer.realizedCreature as Player;
-        protected PlayerGraphics playerGraphics => player.graphicsModule as PlayerGraphics;
-        
+        protected Player player => (abstractPlayer.realizedCreature as Player)!;
+        protected PlayerGraphics playerGraphics => (player.graphicsModule as PlayerGraphics)!;
+
         public abstract bool IsStillActive { get; }
 
         internal bool hasInitSprites = false;

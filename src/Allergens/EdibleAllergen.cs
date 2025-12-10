@@ -14,7 +14,7 @@ namespace Allergies.Allergens
 
         public abstract FSprite GetIcon();
 
-        public bool MatchesCriteria(PhysicalObject? thing, TriggerType trigger)
+        public virtual bool MatchesCriteria(PhysicalObject? thing, TriggerType trigger)
         {
             return trigger == TriggerType.Eat && thing is T;
         }

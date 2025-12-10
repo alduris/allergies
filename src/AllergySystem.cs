@@ -56,7 +56,7 @@ namespace Allergies
                 if (game.IsStorySession)
                 {
                     var saveState = game.GetStorySession.saveState;
-                    seed = saveState.totTime * 1000 + saveState.cycleNumber * saveState.saveStateNumber.Index;
+                    seed = saveState.totTime * 1000 + saveState.cycleNumber * saveState.saveStateNumber.Index + player.ID.number + player.ID.spawner;
                 }
 
                 Random.State oldState = Random.state;
@@ -125,11 +125,14 @@ namespace Allergies
             public readonly ReactionType reactionType = reactionType;
             public readonly List<Reaction> activeReactions = [];
 
+            private int allergyCooldown = 0;
+
             public bool TryApply(Player player, PhysicalObject? physicalObject, TriggerType trigger)
             {
                 if (!player.dead && allergen.MatchesCriteria(physicalObject, trigger) && allReactions.TryGetValue(reactionType, out var reactionFactory))
                 {
                     activeReactions.Add(reactionFactory.Invoke(player));
+                    allergyCooldown = 400; // 10 seconds
                     return true;
                 }
                 return false;
@@ -148,6 +151,8 @@ namespace Allergies
                 }
                 activeReactions.RemoveAll(reactionsToRemove.Contains);
                 reactionsToRemove.Clear();
+
+                if (allergyCooldown > 0) allergyCooldown--;
             }
 
             public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)

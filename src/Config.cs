@@ -7,7 +7,7 @@ namespace Allergies
 {
     internal class Config : OptionInterface
     {
-        private static Config instance;
+        private static Config instance = null!;
 
         private static string SafeName(string name) => Regex.Replace(name, "[^\\w\\d_]", "_").ToLowerInvariant();
 
@@ -17,7 +17,7 @@ namespace Allergies
         }
 
         private static readonly Dictionary<ReactionType, Configurable<int>> reactionWeightConfig = [];
-        private static Configurable<int> maxAllergensConfig;
+        private static Configurable<int> maxAllergensConfig = null!;
 
         public static int MaxAllergens => maxAllergensConfig.Value;
 
@@ -27,7 +27,7 @@ namespace Allergies
         public Config()
         {
             instance ??= this;
-            maxAllergensConfig = instance.config.Bind("MaxAllergens", 5, new ConfigAcceptableRange<int>(1, 9999));
+            maxAllergensConfig = instance.config.Bind("MaxAllergens", 8, new ConfigAcceptableRange<int>(1, 9999));
         }
 
         public override void Initialize()
