@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Allergies
 {
@@ -25,6 +26,18 @@ namespace Allergies
                 }
             }
             return minItem;
+        }
+
+        public static Vector2 Average<T>(this IEnumerable<T> enumerable, Func<T, Vector2> predicate)
+        {
+            Vector2 sum = default!;
+            int count = 0;
+            foreach (var item in enumerable)
+            {
+                sum += predicate.Invoke(item);
+                count++;
+            }
+            return sum / count;
         }
     }
 }

@@ -13,7 +13,10 @@ namespace Allergies
 
         internal static void Register(ReactionType type, int initialWeight)
         {
-            reactionWeightConfig[type] = instance.config.Bind($"ReactionWeight_{SafeName(type.value)}", initialWeight, new ConfigAcceptableRange<int>(0, 999));
+            if (!reactionWeightConfig.ContainsKey(type))
+            {
+                reactionWeightConfig[type] = instance.config.Bind($"ReactionWeight_{SafeName(type.value)}", initialWeight, new ConfigAcceptableRange<int>(0, 999));
+            }
         }
 
         private static readonly Dictionary<ReactionType, Configurable<int>> reactionWeightConfig = [];

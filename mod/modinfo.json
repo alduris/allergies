@@ -1,11 +1,11 @@
 ﻿{
-  "id": "testmod",
-  "name": "Test Mod",
-  "version": "0.1.0",
-  "authors": "Author",
-  "description": "Put a neat description here",
-  "tags": [],
+  "id": "alduris.allergies",
+  "name": "Allergies",
+  "version": "1.0",
+  "authors": "Alduris",
+  "description": "Adds allergic reactions to Rain World. Randomly picked each cycle. Configurable.",
+  "tags": ["Game Mechanics"],
   "requirements": [],
   "requirements_names": [],
-  "checksum_override_version": false
+  "checksum_override_version": true
 }

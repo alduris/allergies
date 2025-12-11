@@ -10,11 +10,15 @@ namespace Allergies.Reactions
 
         public abstract bool IsStillActive { get; }
 
+        public bool slatedForDeletion = false;
         internal bool hasInitSprites = false;
 
         public abstract void Update();
-        public abstract void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam);
+        public virtual void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam) { }
         public abstract void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos);
-        public abstract void Destroy();
+        public virtual void Destroy()
+        {
+            slatedForDeletion = true;
+        }
     }
 }

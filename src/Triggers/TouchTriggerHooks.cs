@@ -13,6 +13,7 @@ namespace Allergies.Triggers
                 On.Player.CollideWithCoralCircuitBit += Player_CollideWithCoralCircuitBit;
                 On.ClimbableVinesSystem.VineBeingClimbedOn += ClimbableVinesSystem_VineBeingClimbedOn;
                 On.LizardTongue.Update += LizardTongue_Update;
+                On.VoidSea.VoidSeaScene.UpdatePlayerInVoidSea += VoidSeaScene_UpdatePlayerInVoidSea;
             }
             catch (Exception e)
             {
@@ -58,6 +59,12 @@ namespace Allergies.Triggers
             {
                 AllergySystem.TriggerAllergy(player, self.lizard, TriggerType.Lick);
             }
+        }
+
+        private static void VoidSeaScene_UpdatePlayerInVoidSea(On.VoidSea.VoidSeaScene.orig_UpdatePlayerInVoidSea orig, VoidSea.VoidSeaScene self, Player voidSeaPlayer)
+        {
+            orig(self, voidSeaPlayer);
+            AllergySystem.TriggerAllergy(voidSeaPlayer, null, TriggerType.Void);
         }
     }
 }

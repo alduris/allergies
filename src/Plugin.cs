@@ -1,8 +1,10 @@
 ﻿using Allergies.Allergens;
+using Allergies.Reactions;
 using Allergies.Triggers;
 using BepInEx;
 using BepInEx.Logging;
 using MoreSlugcats;
+using System;
 using System.Security.Permissions;
 using Watcher;
 
@@ -20,15 +22,20 @@ sealed class Plugin : BaseUnityPlugin
     private bool IsInit;
     private Config options = null!;
 
+    internal static int sessionSeed;
+
     public void OnEnable()
     {
         Logger = base.Logger;
+        sessionSeed = unchecked((int)DateTime.Now.Ticks);
         options = new Config();
 
         // Basic hooks
         On.Player.ctor += Player_ctor;
         On.Player.Update += Player_Update;
         On.RoomCamera.SpriteLeaser.Update += SpriteLeaser_Update;
+        On.RainWorldGame.ShutDownProcess += RainWorldGame_ShutDownProcess;
+        On.AbstractPhysicalObject.Destroy += AbstractPhysicalObject_Destroy;
         On.RainWorld.OnModsInit += OnModsInit;
         On.CreatureSymbol.SpriteNameOfCreature += CreatureSymbol_SpriteNameOfCreature;
 
@@ -39,7 +46,6 @@ sealed class Plugin : BaseUnityPlugin
         TouchTriggerHooks.Apply();
         AirborneTriggerHooks.Apply();
     }
-
 
     private void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
     {
@@ -59,6 +65,21 @@ sealed class Plugin : BaseUnityPlugin
         if (self.drawableObject is PlayerGraphics { player: Player player } && !self.deleteMeNextFrame)
         {
             AllergySystem.DrawSprites(player, self, rCam, timeStacker, camPos);
+        }
+    }
+
+    private void RainWorldGame_ShutDownProcess(On.RainWorldGame.orig_ShutDownProcess orig, RainWorldGame self)
+    {
+        orig(self);
+        AllergySystem.Destroy(null);
+    }
+
+    private void AbstractPhysicalObject_Destroy(On.AbstractPhysicalObject.orig_Destroy orig, AbstractPhysicalObject self)
+    {
+        orig(self);
+        if (self is AbstractCreature)
+        {
+            AllergySystem.Destroy(self as AbstractCreature);
         }
     }
 
@@ -95,13 +116,15 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<NeedleWorm>(CreatureTemplate.Type.SmallNeedleWorm));
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<VultureGrub>(CreatureTemplate.Type.VultureGrub));
 
-        AllergySystem.Register(new SpiderBiteAllergen());
-        AllergySystem.Register(new DartMaggotAllergen());
-        AllergySystem.Register(new CoralAllergen());
         AllergySystem.Register(new ClothAirborneAllergen());
+        AllergySystem.Register(new CoralAllergen());
+        AllergySystem.Register(new DartMaggotAllergen());
         AllergySystem.Register(new LizardLickAllergen());
         AllergySystem.Register(new PolePlantAllergen());
+        AllergySystem.Register(new ScavengerAllergen());
+        AllergySystem.Register(new SpiderBiteAllergen());
         AllergySystem.Register(new SporesAllergen());
+        AllergySystem.Register(new VoidAllergen());
 
         if (ModManager.DLCShared)
         {
@@ -109,11 +132,6 @@ sealed class Plugin : BaseUnityPlugin
             AllergySystem.Register(new SimpleEdibleItemAllergen<GlowWeed>(DLCSharedEnums.AbstractObjectType.GlowWeed));
             AllergySystem.Register(new SimpleEdibleItemAllergen<GooieDuck>(DLCSharedEnums.AbstractObjectType.GooieDuck));
             AllergySystem.Register(new SimpleEdibleItemAllergen<LillyPuck>(DLCSharedEnums.AbstractObjectType.LillyPuck));
-        }
-
-        if (ModManager.MSC)
-        {
-            AllergySystem.Register(new SimpleEdibleItemAllergen<FireEgg>(MoreSlugcatsEnums.AbstractObjectType.FireEgg));
         }
 
         if (ModManager.Watcher)
@@ -129,6 +147,11 @@ sealed class Plugin : BaseUnityPlugin
         }
 
         // Register reactions
+        AllergySystem.Register(ReactionType.Sneeze, (player) => new SneezeReaction(player.abstractCreature), 3);
+        AllergySystem.Register(ReactionType.Spasm, (player) => new SpasmReaction(player.abstractCreature), 5);
+        AllergySystem.Register(ReactionType.Anaphylaxis, (player) => new AnaphylaxisReaction(player.abstractCreature), 3);
+        AllergySystem.Register(ReactionType.BigHead, (player) => new BigHeadReaction(player.abstractCreature), 1);
+        AllergySystem.Register(ReactionType.Explode, (player) => new ExplodeReaction(player.abstractCreature), 0);
 
         // Register remix menu
         MachineConnector.SetRegisteredOI("alduris.allergies", options);

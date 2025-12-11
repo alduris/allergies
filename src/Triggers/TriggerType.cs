@@ -5,6 +5,7 @@
         public static TriggerType Eat = new(nameof(Eat), true);
         public static TriggerType Bite = new(nameof(Bite), true);
         public static TriggerType Lick = new(nameof(Lick), true);
+        public static TriggerType Void = new(nameof(Void), true);
         public static TriggerType Touch = new(nameof(Touch), true);
         public static TriggerType Coral = new(nameof(Coral), true);
         public static TriggerType Impale = new(nameof(Impale), true);
