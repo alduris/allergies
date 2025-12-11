@@ -40,7 +40,7 @@ namespace Allergies.Reactions
                 {
                     // Normal sized explosion
                     room.AddObject(new SootMark(room, pos, 80f, true));
-                    room.AddObject(new Explosion(room, player, pos, 7, 250f, 6.2f, 2f, 280f, 0.25f, null, 0.7f, 160f, 1f));
+                    room.AddObject(new Explosion(room, null, pos, 7, 250f, 6.2f, 2f, 280f, 0.25f, null, 0.7f, 160f, 1f));
                     room.AddObject(new Explosion.ExplosionLight(pos, 280f, 1f, 7, color));
                     room.AddObject(new Explosion.ExplosionLight(pos, 230f, 1f, 3, new Color(1f, 1f, 1f)));
                     room.AddObject(new ExplosionSpikes(room, pos, 14, 30f, 9f, 7f, 170f, color));
@@ -50,8 +50,8 @@ namespace Allergies.Reactions
                 {
                     // Singularity bomb explosion :3c
                     room.AddObject(new SingularityBomb.SparkFlash(player.firstChunk.pos, 300f, color));
-                    room.AddObject(new Explosion(room, player, pos, 7, 450f, 6.2f, 10f, 280f, 0.25f, null, 0.3f, 160f, 1f));
-                    room.AddObject(new Explosion(room, player, pos, 7, 2000f, 4f, 0f, 400f, 0.25f, null, 0.3f, 200f, 1f));
+                    room.AddObject(new Explosion(room, null, pos, 7, 450f, 6.2f, 10f, 280f, 0.25f, null, 0.3f, 160f, 1f));
+                    room.AddObject(new Explosion(room, null, pos, 7, 2000f, 4f, 0f, 400f, 0.25f, null, 0.3f, 200f, 1f));
                     room.AddObject(new Explosion.ExplosionLight(pos, 280f, 1f, 7, color));
                     room.AddObject(new Explosion.ExplosionLight(pos, 230f, 1f, 3, new Color(1f, 1f, 1f)));
                     room.AddObject(new Explosion.ExplosionLight(pos, 2000f, 2f, 60, color));

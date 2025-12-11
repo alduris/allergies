@@ -29,7 +29,8 @@ namespace Allergies.Allergens
             }
             if (thing is Player otherPlayer)
             {
-                return (otherPlayer.graphicsModule as PlayerGraphics)!.gown != null;
+                var gown = (otherPlayer.graphicsModule as PlayerGraphics)!.gown;
+                return gown != null && gown.visible;
             }
             return false;
         }

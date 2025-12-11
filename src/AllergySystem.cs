@@ -102,7 +102,7 @@ namespace Allergies
                 return [];
 
             List<ActiveAllergy> activeAllergies = [];
-            int allergiesToPick = Random.Range(0, Config.MaxAllergens + 1);
+            int allergiesToPick = Config.AlwaysMaxAllergens ? Config.MaxAllergens : Random.Range(0, Config.MaxAllergens + 1);
             for (int i = 0; i < allergiesToPick && unpickedAllergens.Count > 0; i++)
             {
                 int index = Random.Range(0, unpickedAllergens.Count);
@@ -172,8 +172,11 @@ namespace Allergies
 
             public bool TryApply(Player player, PhysicalObject? physicalObject, TriggerType trigger)
             {
-                if (!player.dead && allergen.MatchesCriteria(physicalObject, trigger) && allReactions.TryGetValue(reactionType, out var reactionFactory))
+                if (allergyCooldown <= 0 && !player.dead && allergen.MatchesCriteria(physicalObject, trigger) && allReactions.TryGetValue(reactionType, out var reactionFactory))
                 {
+#if DEBUG
+                    Plugin.Logger.LogDebug($"Allergy trigger! \"{allergen.Name}\" for reaction \"{reactionType}\"");
+#endif
                     allActiveAllergies.Add(this);
                     activeReactions.Add(reactionFactory.Invoke(player));
                     allergyCooldown = 400; // 10 seconds
