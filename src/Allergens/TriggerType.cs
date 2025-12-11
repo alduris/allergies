@@ -1,4 +1,4 @@
-﻿namespace Allergies.Triggers
+﻿namespace Allergies.Allergens
 {
     public class TriggerType(string name, bool register = false) : ExtEnum<TriggerType>(name, register)
     {

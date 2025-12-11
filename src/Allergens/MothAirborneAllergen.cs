@@ -1,5 +1,4 @@
-﻿using Allergies.Triggers;
-using Watcher;
+﻿using Watcher;
 
 namespace Allergies.Allergens
 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using Allergies.Triggers;
 
 namespace Allergies.Allergens
 {
@@ -10,5 +9,12 @@ namespace Allergies.Allergens
         public FSprite GetIcon();
 
         public bool MatchesCriteria(PhysicalObject? thing, TriggerType trigger);
+
+        public enum TriggerGroup
+        {
+            Eat = 1,
+            Contact = 2,
+            Airborne = 4
+        }
     }
 }

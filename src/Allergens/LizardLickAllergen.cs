@@ -1,6 +1,4 @@
-﻿using Allergies.Triggers;
-
-namespace Allergies.Allergens
+﻿namespace Allergies.Allergens
 {
     internal class LizardLickAllergen : IAllergen
     {

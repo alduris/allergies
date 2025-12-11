@@ -1,4 +1,5 @@
 ﻿using System;
+using Allergies.Allergens;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 

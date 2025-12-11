@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Allergies.Triggers;
 using MoreSlugcats;
 
 namespace Allergies.Allergens

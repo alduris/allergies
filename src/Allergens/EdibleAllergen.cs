@@ -1,5 +1,4 @@
 ﻿using System.Runtime.CompilerServices;
-using Allergies.Triggers;
 
 namespace Allergies.Allergens
 {

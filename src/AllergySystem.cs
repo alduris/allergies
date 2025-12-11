@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using Allergies.Allergens;
 using Allergies.Reactions;
-using Allergies.Triggers;
 using JetBrains.Annotations;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -64,11 +63,11 @@ namespace Allergies
             if (!activeAllergies.TryGetValue(player, out _))
             {
                 int seed = new System.Random().Next();
-                if (game.IsStorySession)
+                /*if (game.IsStorySession)
                 {
                     var saveState = game.GetStorySession.saveState;
                     seed = saveState.totTime * 1000 + saveState.cycleNumber * saveState.saveStateNumber.Index + player.ID.number + player.ID.spawner + Plugin.sessionSeed;
-                }
+                }*/
 
                 Random.State oldState = Random.state;
                 Random.InitState(seed);

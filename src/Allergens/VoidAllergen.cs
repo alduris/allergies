@@ -1,5 +1,4 @@
-﻿using Allergies.Triggers;
-using MoreSlugcats;
+﻿using MoreSlugcats;
 
 namespace Allergies.Allergens
 {

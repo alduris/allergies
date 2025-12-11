@@ -1,4 +1,5 @@
 ﻿using System;
+using Allergies.Allergens;
 
 namespace Allergies.Triggers
 {

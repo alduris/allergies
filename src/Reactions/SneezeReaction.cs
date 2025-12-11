@@ -22,11 +22,11 @@ namespace Allergies.Reactions
             }
             else if (sneezeCooldown == 0 && sneezeWindup == 0 && Random.value < 0.002f)
             {
-                sneezeWindup = Random.Range(5, 26);
+                sneezeWindup = Random.Range(10, 61);
             }
             else if (sneezeWindup > 0)
             {
-                player.Blink(3);
+                player.Blink(6);
                 sneezeWindup--;
                 if (sneezeWindup == 0)
                 {
@@ -60,7 +60,7 @@ namespace Allergies.Reactions
         {
             if (sneezeWindup > 0)
             {
-                sLeaser.sprites[9].y += 5f * (1f / sneezeWindup);
+                sLeaser.sprites[9].y += 5f * Mathf.Pow(1f / sneezeWindup, 0.25f);
             }
         }
     }

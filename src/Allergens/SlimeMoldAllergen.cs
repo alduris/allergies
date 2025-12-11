@@ -1,6 +1,4 @@
-﻿using Allergies.Triggers;
-
-namespace Allergies.Allergens
+﻿namespace Allergies.Allergens
 {
     internal class SlimeMoldAllergen() : SimpleEdibleItemAllergen<SlimeMold>(AbstractPhysicalObject.AbstractObjectType.SlimeMold, 0)
     {

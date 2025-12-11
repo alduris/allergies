@@ -1,5 +1,4 @@
-﻿using Allergies.Triggers;
-using RWCustom;
+﻿using RWCustom;
 
 namespace Allergies.Allergens
 {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Allergies.Allergens;
 using RWCustom;
 using UnityEngine;
 

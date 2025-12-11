@@ -51,7 +51,7 @@ namespace Allergies.Reactions
             {
                 // head sprite: 3
                 // face sprite: 9
-                float sumOfIntensities = SumOfIntensities(timeStacker) * 0.1f + 1f;
+                float sumOfIntensities = SumOfIntensities(timeStacker) * 0.3f + 1f;
                 sLeaser.sprites[3].scaleX *= sumOfIntensities;
                 sLeaser.sprites[3].scaleY = sumOfIntensities;
                 sLeaser.sprites[9].scaleX *= sumOfIntensities;

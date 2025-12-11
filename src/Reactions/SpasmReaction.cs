@@ -18,7 +18,7 @@ namespace Allergies.Reactions
             }
             else if (!hasSpawned)
             {
-                int duration = Random.Range(30, 81);
+                int duration = Random.Range(60, 121);
                 player.room.AddObject(new CreatureSpasmer(player, false, duration));
                 player.Stun(duration + 20);
                 hasSpawned = true;

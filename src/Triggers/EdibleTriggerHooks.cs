@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Allergies.Allergens;
 using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using UnityEngine;
