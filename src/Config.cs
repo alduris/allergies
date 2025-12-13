@@ -14,7 +14,7 @@ namespace Allergies
     {
         private static Config instance = null!;
 
-        private static string SafeName(string name) => Regex.Replace(name, "[^\\w\\d_]", "_").ToLowerInvariant();
+        private static string SafeName(string name) => Regex.Replace(name, @"[^\w\d_]", "_").ToLowerInvariant();
 
         internal static void Register(ReactionType type, int initialWeight)
         {

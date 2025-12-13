@@ -10,6 +10,7 @@ namespace Allergies.Triggers
         {
             try
             {
+                On.Player.SlugcatGrab += Player_OnSlugcatGrab;
                 On.Player.Collide += Player_Collide;
                 On.Player.CollideWithCoralCircuitBit += Player_CollideWithCoralCircuitBit;
                 On.ClimbableVinesSystem.VineBeingClimbedOn += ClimbableVinesSystem_VineBeingClimbedOn;
@@ -22,7 +23,13 @@ namespace Allergies.Triggers
             }
         }
 
-        private static void Player_Collide(On.Player.orig_Collide orig, Player self, PhysicalObject otherObject, int myChunk, int otherChunk)
+        private static void Player_OnSlugcatGrab(On.Player.orig_SlugcatGrab orig, Player self, PhysicalObject obj, int graspUsed)
+        {
+            orig(self, obj, graspUsed);
+            AllergySystem.TriggerAllergy(self, obj, TriggerType.Touch);
+        }
+
+        private static void Player_Collide(On.Player.orig_Collide orig, Player self, PhysicalObject? otherObject, int myChunk, int otherChunk)
         {
             orig(self, otherObject, myChunk, otherChunk);
             if (otherObject is not null)
