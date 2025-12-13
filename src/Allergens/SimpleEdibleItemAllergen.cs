@@ -2,7 +2,7 @@
 
 namespace Allergies.Allergens
 {
-    public class SimpleEdibleItemAllergen<T>(AbstractPhysicalObject.AbstractObjectType itemType, int iconIntData = 0) : EdibleAllergen<T> where T : PhysicalObject
+    public class SimpleEdibleItemAllergen<T>(AbstractPhysicalObject.AbstractObjectType itemType, int iconIntData = 0) : SimpleEdibleAllergen<T> where T : PhysicalObject
     {
         private readonly AbstractPhysicalObject.AbstractObjectType itemType = itemType;
         private readonly int iconIntData = iconIntData;

@@ -18,7 +18,7 @@ namespace Allergies;
 [BepInPlugin("alduris.allergies", "Allergies", "1.0")]
 sealed class Plugin : BaseUnityPlugin
 {
-    public static new ManualLogSource Logger = null!;
+    public new static ManualLogSource Logger = null!;
     private bool IsInit;
     private Config options = null!;
 
@@ -77,9 +77,9 @@ sealed class Plugin : BaseUnityPlugin
     private void AbstractPhysicalObject_Destroy(On.AbstractPhysicalObject.orig_Destroy orig, AbstractPhysicalObject self)
     {
         orig(self);
-        if (self is AbstractCreature)
+        if (self is AbstractCreature creature)
         {
-            AllergySystem.Destroy(self as AbstractCreature);
+            AllergySystem.Destroy(creature);
         }
     }
 
@@ -105,9 +105,9 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(new SimpleEdibleItemAllergen<Mushroom>(AbstractPhysicalObject.AbstractObjectType.Mushroom));
         AllergySystem.Register(new SimpleEdibleItemAllergen<OracleSwarmer>(AbstractPhysicalObject.AbstractObjectType.SLOracleSwarmer));
         AllergySystem.Register(new SimpleEdibleItemAllergen<Pomegranate>(AbstractPhysicalObject.AbstractObjectType.Pomegranate));
-        AllergySystem.Register(new SeedAllergen());
-        AllergySystem.Register(new SlimeMoldAllergen());
         AllergySystem.Register(new SimpleEdibleItemAllergen<SwollenWaterNut>(AbstractPhysicalObject.AbstractObjectType.WaterNut));
+        
+        AllergySystem.Register(new SimpleAirborneItemAllergen<FlyLure>(AbstractPhysicalObject.AbstractObjectType.FlyLure));
 
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<Centipede>(CreatureTemplate.Type.Centipede, 2));
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<Fly>(CreatureTemplate.Type.Fly));
@@ -115,13 +115,18 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<Lizard>(CreatureTemplate.Type.LizardTemplate));
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<NeedleWorm>(CreatureTemplate.Type.SmallNeedleWorm));
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<VultureGrub>(CreatureTemplate.Type.VultureGrub));
+        
+        AllergySystem.Register(new SimpleAirborneCreatureAllergen<DaddyLongLegs>(CreatureTemplate.Type.DaddyLongLegs));
+        AllergySystem.Register(new SimpleAirborneCreatureAllergen<Deer>(CreatureTemplate.Type.Deer));
+        AllergySystem.Register(new SimpleAirborneCreatureAllergen<Scavenger>(CreatureTemplate.Type.Scavenger));
 
         AllergySystem.Register(new ClothAirborneAllergen());
         AllergySystem.Register(new CoralAllergen());
         AllergySystem.Register(new DartMaggotAllergen());
         AllergySystem.Register(new LizardLickAllergen());
         AllergySystem.Register(new PolePlantAllergen());
-        AllergySystem.Register(new ScavengerAllergen());
+        AllergySystem.Register(new SeedAllergen());
+        AllergySystem.Register(new SlimeMoldAllergen());
         AllergySystem.Register(new SpiderBiteAllergen());
         AllergySystem.Register(new SporesAllergen());
         AllergySystem.Register(new VoidAllergen());
@@ -142,8 +147,8 @@ sealed class Plugin : BaseUnityPlugin
             AllergySystem.Register(new SimpleEdibleCreatureAllergen<Frog>(WatcherEnums.CreatureTemplateType.Frog));
             AllergySystem.Register(new SimpleEdibleCreatureAllergen<Rat>(WatcherEnums.CreatureTemplateType.Rat));
             AllergySystem.Register(new SimpleEdibleCreatureAllergen<SandGrub>(WatcherEnums.CreatureTemplateType.SandGrub));
-
-            AllergySystem.Register(new MothAirborneAllergen());
+            
+            AllergySystem.Register(new SimpleAirborneCreatureAllergen<BigMoth>(WatcherEnums.CreatureTemplateType.BigMoth));
         }
 
         // Register reactions

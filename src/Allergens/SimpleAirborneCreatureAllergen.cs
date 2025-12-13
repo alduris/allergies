@@ -1,8 +1,8 @@
-﻿using RWCustom;
+using RWCustom;
 
 namespace Allergies.Allergens
 {
-    public class SimpleEdibleCreatureAllergen<T>(CreatureTemplate.Type creatureType, int iconIntData = 0) : SimpleEdibleAllergen<T> where T : Creature
+    public class SimpleAirborneCreatureAllergen<T>(CreatureTemplate.Type creatureType, int iconIntData = 0) : SimpleAirborneAllergen<T> where T : Creature
     {
         private readonly CreatureTemplate.Type _creatureType = creatureType;
         private readonly int _iconIntData = iconIntData;

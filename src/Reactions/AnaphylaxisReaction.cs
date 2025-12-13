@@ -6,7 +6,7 @@ namespace Allergies.Reactions
     {
         private int countdown = Random.Range(30, 120);
         private int beginningSuffocationPhase = Random.Range(100, 300);
-        private int activelyDyingPhase = Random.Range(50, 160);
+        private int activelyDyingPhase = Random.Range(70, 160);
 
         public override bool IsStillActive => !player.dead;
 
@@ -20,18 +20,20 @@ namespace Allergies.Reactions
             }
             else if (beginningSuffocationPhase > 0)
             {
-                float currentIntensity = Mathf.Pow(1f / beginningSuffocationPhase, 0.25f);
+                float currentIntensity = Mathf.Pow(Mathf.Max(0f, 1f - beginningSuffocationPhase / 60f), 0.333f);
                 player.aerobicLevel = Mathf.Max(player.aerobicLevel, currentIntensity);
-                if (currentIntensity > 0.42f)
-                {
-                    player.Blink(6);
-                }
+                player.exhausted = true;
+                player.Blink(6);
                 beginningSuffocationPhase--;
+                if (beginningSuffocationPhase == 0)
+                {
+                    player.room.AddObject(new CreatureSpasmer(player, false, activelyDyingPhase));
+                    player.Stun(activelyDyingPhase * 2);
+                }
             }
             else if (activelyDyingPhase > 0)
             {
                 player.aerobicLevel = Mathf.Max(player.aerobicLevel, 1);
-                player.Stun(6);
                 activelyDyingPhase--;
             }
             else

@@ -2,13 +2,13 @@
 
 namespace Allergies.Allergens
 {
-    public abstract class EdibleAllergen<T> : IAllergen where T : PhysicalObject
+    public abstract class SimpleEdibleAllergen<T> : IAllergen where T : PhysicalObject
     {
         public abstract string Name { get; }
 
         public bool Equals(IAllergen other)
         {
-            return other is EdibleAllergen<T>;
+            return other is SimpleEdibleAllergen<T>;
         }
 
         public abstract FSprite GetIcon();

@@ -20,7 +20,7 @@ namespace Allergies.Reactions
             {
                 sneezeCooldown--;
             }
-            else if (sneezeCooldown == 0 && sneezeWindup == 0 && Random.value < 0.002f)
+            else if (sneezeCooldown == 0 && sneezeWindup == 0 && Random.value < 0.005f)
             {
                 sneezeWindup = Random.Range(10, 61);
             }

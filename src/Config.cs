@@ -83,11 +83,6 @@ namespace Allergies
 
         private class OpShinyLabel : OpLabel
         {
-            public OpShinyLabel(float posX, float posY, string text = "TEXT", bool bigText = false) : base(posX, posY, text, bigText)
-            {
-                label.shader = Custom.rainWorld.Shaders["MenuText"];
-            }
-
             public OpShinyLabel(Vector2 pos, Vector2 size, string text = "TEXT", FLabelAlignment alignment = FLabelAlignment.Center, bool bigText = false, FTextParams? textParams = null) : base(pos, size, text, alignment, bigText, textParams)
             {
                 label.shader = Custom.rainWorld.Shaders["MenuText"];
