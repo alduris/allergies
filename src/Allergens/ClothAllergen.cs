@@ -3,13 +3,13 @@ using MoreSlugcats;
 
 namespace Allergies.Allergens
 {
-    internal class ClothAirborneAllergen : IAllergen
+    internal class ClothAllergen : IAllergen
     {
         public string Name => "Cloth";
 
         public bool Equals(IAllergen other)
         {
-            return other is ClothAirborneAllergen;
+            return other is ClothAllergen;
         }
 
         public FSprite GetIcon()
@@ -19,7 +19,7 @@ namespace Allergies.Allergens
 
         public bool MatchesCriteria(PhysicalObject? thing, TriggerType trigger)
         {
-            if (trigger != TriggerType.Airborne) return false;
+            if (trigger != TriggerType.Touch) return false;
 
             if (thing is MoonCloak) return true;
             if (thing is Oracle oracle)

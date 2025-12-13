@@ -120,7 +120,7 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(new SimpleAirborneCreatureAllergen<Deer>(CreatureTemplate.Type.Deer));
         AllergySystem.Register(new SimpleAirborneCreatureAllergen<Scavenger>(CreatureTemplate.Type.Scavenger));
 
-        AllergySystem.Register(new ClothAirborneAllergen());
+        AllergySystem.Register(new ClothAllergen());
         AllergySystem.Register(new CoralAllergen());
         AllergySystem.Register(new DartMaggotAllergen());
         AllergySystem.Register(new LizardLickAllergen());
@@ -137,6 +137,8 @@ sealed class Plugin : BaseUnityPlugin
             AllergySystem.Register(new SimpleEdibleItemAllergen<GlowWeed>(DLCSharedEnums.AbstractObjectType.GlowWeed));
             AllergySystem.Register(new SimpleEdibleItemAllergen<GooieDuck>(DLCSharedEnums.AbstractObjectType.GooieDuck));
             AllergySystem.Register(new SimpleEdibleItemAllergen<LillyPuck>(DLCSharedEnums.AbstractObjectType.LillyPuck));
+            
+            AllergySystem.Register(new SimpleAirborneCreatureAllergen<Yeek>(DLCSharedEnums.CreatureTemplateType.Yeek));
         }
 
         if (ModManager.Watcher)
@@ -149,6 +151,7 @@ sealed class Plugin : BaseUnityPlugin
             AllergySystem.Register(new SimpleEdibleCreatureAllergen<SandGrub>(WatcherEnums.CreatureTemplateType.SandGrub));
             
             AllergySystem.Register(new SimpleAirborneCreatureAllergen<BigMoth>(WatcherEnums.CreatureTemplateType.BigMoth));
+            AllergySystem.Register(new SimpleAirborneCreatureAllergen<FireSprite>(WatcherEnums.CreatureTemplateType.FireSprite));
         }
 
         // Register reactions
