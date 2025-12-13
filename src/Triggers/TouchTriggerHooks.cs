@@ -38,7 +38,7 @@ namespace Allergies.Triggers
             }
         }
 
-        private static void Player_CollideWithCoralCircuitBit(On.Player.orig_CollideWithCoralCircuitBit orig, Player self, int chunk, CoralBrain.CoralCircuit.CircuitBit bit, float overLapFac)
+        private static void Player_CollideWithCoralCircuitBit(On.Player.orig_CollideWithCoralCircuitBit orig, Player self, int chunk, CoralCircuit.CircuitBit bit, float overLapFac)
         {
             orig(self, chunk, bit, overLapFac);
             AllergySystem.TriggerAllergy(self, null, TriggerType.Coral);
@@ -63,7 +63,7 @@ namespace Allergies.Triggers
         {
             BodyChunk lastAttached = self.attached;
             orig(self);
-            if (lastAttached is null && self.attached is BodyChunk { owner: Player player })
+            if (lastAttached is null && self.attached is { owner: Player player })
             {
                 AllergySystem.TriggerAllergy(player, self.lizard, TriggerType.Lick);
             }
