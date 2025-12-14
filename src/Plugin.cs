@@ -154,8 +154,9 @@ sealed class Plugin : BaseUnityPlugin
         }
 
         // Register reactions
-        AllergySystem.Register(ReactionType.Sneeze, (player) => new SneezeReaction(player.abstractCreature), 3);
+        AllergySystem.Register(ReactionType.Sneeze, (player) => new SneezeReaction(player.abstractCreature), 4);
         AllergySystem.Register(ReactionType.Spasm, (player) => new SpasmReaction(player.abstractCreature), 5);
+        AllergySystem.Register(ReactionType.Vomit, (player) => new VomitReaction(player.abstractCreature), 3);
         AllergySystem.Register(ReactionType.Anaphylaxis, (player) => new AnaphylaxisReaction(player.abstractCreature), 3);
         AllergySystem.Register(ReactionType.BigHead, (player) => new BigHeadReaction(player.abstractCreature), 1);
         AllergySystem.Register(ReactionType.Explode, (player) => new ExplodeReaction(player.abstractCreature), 0);
