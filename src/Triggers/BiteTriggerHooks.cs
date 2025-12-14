@@ -25,7 +25,7 @@ namespace Allergies.Triggers
         {
             // Assume it is a bite
             orig(self, grasp);
-            AllergySystem.TriggerAllergy(self, grasp.grabber, TriggerType.Bite);
+            AllergySystem.TriggerAllergy(self, grasp.grabber, TriggerType.Grab);
         }
 
         private static void BigSpider_Collide(ILContext il)
@@ -41,7 +41,7 @@ namespace Allergies.Triggers
                 {
                     if (otherObject is Player player)
                     {
-                        AllergySystem.TriggerAllergy(player, self, TriggerType.Bite);
+                        AllergySystem.TriggerAllergy(player, self, TriggerType.Grab);
                     }
                 });
             }

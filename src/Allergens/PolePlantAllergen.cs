@@ -22,7 +22,7 @@ namespace Allergies.Allergens
 
         public bool MatchesCriteria(PhysicalObject? thing, TriggerType trigger)
         {
-            return (trigger == TriggerType.Touch || trigger == TriggerType.Bite) && thing is PoleMimic;
+            return (trigger == TriggerType.Touch || trigger == TriggerType.Grab) && thing is PoleMimic;
         }
     }
 }

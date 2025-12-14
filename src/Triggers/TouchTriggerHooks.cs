@@ -1,6 +1,7 @@
 ﻿using System;
 using Allergies.Allergens;
 using CoralBrain;
+using UnityEngine;
 
 namespace Allergies.Triggers
 {
@@ -16,6 +17,7 @@ namespace Allergies.Triggers
                 On.ClimbableVinesSystem.VineBeingClimbedOn += ClimbableVinesSystem_VineBeingClimbedOn;
                 On.LizardTongue.Update += LizardTongue_Update;
                 On.VoidSea.VoidSeaScene.UpdatePlayerInVoidSea += VoidSeaScene_UpdatePlayerInVoidSea;
+                On.DaddyCorruption.Update += DaddyCorruption_Update;
             }
             catch (Exception e)
             {
@@ -56,6 +58,10 @@ namespace Allergies.Triggers
                 {
                     AllergySystem.TriggerAllergy(player, null, TriggerType.Coral);
                 }
+                else if (vPos.vine is DaddyCorruption.ClimbableCorruptionTube)
+                {
+                    AllergySystem.TriggerAllergy(player, null, TriggerType.Corruption);
+                }
             }
         }
 
@@ -73,6 +79,24 @@ namespace Allergies.Triggers
         {
             orig(self, voidSeaPlayer);
             AllergySystem.TriggerAllergy(voidSeaPlayer, null, TriggerType.Void);
+        }
+
+        private static void DaddyCorruption_Update(On.DaddyCorruption.orig_Update orig, DaddyCorruption self, bool eu)
+        {
+            orig(self, eu);
+            foreach (AbstractCreature abstrPlayer in self.room.game.Players)
+            {
+                if (abstrPlayer.realizedCreature is Player player && player.room == self.room)
+                {
+                    foreach (DaddyCorruption.Bulb bulb in self.allBulbs)
+                    {
+                        if (Vector2.Distance(bulb.pos, player.firstChunk.pos) < 100f)
+                        {
+                            AllergySystem.TriggerAllergy(player, null, TriggerType.Corruption);
+                        }
+                    }
+                }
+            }
         }
     }
 }

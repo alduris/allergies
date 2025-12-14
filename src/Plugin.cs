@@ -112,11 +112,9 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<Centipede>(CreatureTemplate.Type.Centipede, 2));
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<Fly>(CreatureTemplate.Type.Fly));
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<Hazer>(CreatureTemplate.Type.Hazer));
-        AllergySystem.Register(new SimpleEdibleCreatureAllergen<Lizard>(CreatureTemplate.Type.LizardTemplate));
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<NeedleWorm>(CreatureTemplate.Type.SmallNeedleWorm));
         AllergySystem.Register(new SimpleEdibleCreatureAllergen<VultureGrub>(CreatureTemplate.Type.VultureGrub));
         
-        AllergySystem.Register(new SimpleAirborneCreatureAllergen<DaddyLongLegs>(CreatureTemplate.Type.DaddyLongLegs));
         AllergySystem.Register(new SimpleAirborneCreatureAllergen<Deer>(CreatureTemplate.Type.Deer));
         AllergySystem.Register(new SimpleAirborneCreatureAllergen<Scavenger>(CreatureTemplate.Type.Scavenger));
 
@@ -125,6 +123,7 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(new DartMaggotAllergen());
         AllergySystem.Register(new LizardLickAllergen());
         AllergySystem.Register(new PolePlantAllergen());
+        AllergySystem.Register(new RotAllergen());
         AllergySystem.Register(new SeedAllergen());
         AllergySystem.Register(new SlimeMoldAllergen());
         AllergySystem.Register(new SpiderBiteAllergen());

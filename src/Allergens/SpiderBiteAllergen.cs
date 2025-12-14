@@ -22,7 +22,7 @@ namespace Allergies.Allergens
 
         public bool MatchesCriteria(PhysicalObject? thing, TriggerType trigger)
         {
-            return trigger == TriggerType.Bite && thing is BigSpider or Spider;
+            return trigger == TriggerType.Grab && thing is BigSpider or Spider;
         }
     }
 }
