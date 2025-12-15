@@ -31,7 +31,7 @@ sealed class Plugin : BaseUnityPlugin
         options = new Config();
 
         // Basic hooks
-        On.Player.ctor += Player_ctor;
+        On.Player.NewRoom += Player_NewRoom;
         On.Player.Update += Player_Update;
         On.RoomCamera.SpriteLeaser.Update += SpriteLeaser_Update;
         On.RainWorldGame.ShutDownProcess += RainWorldGame_ShutDownProcess;
@@ -47,10 +47,10 @@ sealed class Plugin : BaseUnityPlugin
         AirborneTriggerHooks.Apply();
     }
 
-    private void Player_ctor(On.Player.orig_ctor orig, Player self, AbstractCreature abstractCreature, World world)
+    private void Player_NewRoom(On.Player.orig_NewRoom orig, Player self, Room newRoom)
     {
-        orig(self, abstractCreature, world);
-        AllergySystem.Initiate(world.game, abstractCreature);
+        orig(self, newRoom);
+        AllergySystem.Initiate(newRoom.world.game, self, newRoom);
     }
 
     private void Player_Update(On.Player.orig_Update orig, Player self, bool eu)

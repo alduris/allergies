@@ -27,9 +27,13 @@ namespace Allergies
         private static readonly Dictionary<ReactionType, Configurable<int>> reactionWeightConfig = [];
         private static Configurable<int> maxAllergensConfig = null!;
         private static Configurable<bool> alwaysMaxAllergensConfig = null!;
+        private static Configurable<bool> showAllergensConfig = null!;
+        private static Configurable<PlayStyle> playStyleConfig = null!;
 
         public static int MaxAllergens => maxAllergensConfig.Value;
         public static bool AlwaysMaxAllergens => alwaysMaxAllergensConfig.Value;
+        public static bool ShowAllergens => showAllergensConfig.Value;
+        public static PlayStyle SelectedPlayStyle => playStyleConfig.Value;
 
         public static int WeightOf(ReactionType type) => reactionWeightConfig.TryGetValue(type, out var weight) ? weight.Value : 0;
         public static IEnumerable<KeyValuePair<ReactionType, int>> AllWeights() => reactionWeightConfig.Select(x => new KeyValuePair<ReactionType, int>(x.Key, WeightOf(x.Key)));
@@ -37,8 +41,10 @@ namespace Allergies
         public Config()
         {
             instance ??= this;
-            maxAllergensConfig = instance.config.Bind("MaxAllergens", 8, new ConfigAcceptableRange<int>(1, 9999));
-            alwaysMaxAllergensConfig = instance.config.Bind("AlwaysMax", false);
+            maxAllergensConfig = config.Bind("MaxAllergens", 8, new ConfigAcceptableRange<int>(1, 9999));
+            alwaysMaxAllergensConfig = config.Bind("AlwaysMax", false);
+            showAllergensConfig = config.Bind("ShowAllergens", false);
+            playStyleConfig = config.Bind("PlayStyle", PlayStyle.PerWakeUp);
         }
 
         public override void Initialize()
@@ -64,13 +70,17 @@ namespace Allergies
                 new OpDragger(maxAllergensConfig, new Vector2(426f, 470f)),
                 new OpLabel(150f, 440f, "Always use maximum allergies:", false),
                 new OpCheckBox(alwaysMaxAllergensConfig, new Vector2(426f, 440f)),
+                new OpLabel(150f, 410f, "Show allergens:", false),
+                new OpCheckBox(showAllergensConfig, new Vector2(426f, 410f)),
+                new OpLabel(150f, 380f, "Randomization frequency:", false),
+                new OpResourceSelector2(playStyleConfig, new Vector2(310f, 380f), 140f),
 
-                new OpRule(new Vector2(10f, 430f), 580f)
+                new OpRule(new Vector2(10f, 370f), 580f)
                 );
 
             // Reactions
-            sb.AddItems(new OpLabel(new Vector2(0f, 390f), new Vector2(600f, 30f), "REACTION WEIGHTS", FLabelAlignment.Center, true));
-            float y = 390f;
+            sb.AddItems(new OpLabel(new Vector2(0f, 330f), new Vector2(600f, 30f), "REACTION WEIGHTS", FLabelAlignment.Center, true));
+            float y = 330f;
             foreach (var (type, config) in reactionWeightConfig.OrderBy(x => x.Key.ToString(), StringComparer.OrdinalIgnoreCase))
             {
                 y -= 30f;
@@ -79,6 +89,14 @@ namespace Allergies
 
             // Set height for scrolling
             sb.SetContentSize(600f - y);
+        }
+
+        public enum PlayStyle
+        {
+            PerWakeUp,
+            PerCycle,
+            PerSession,
+            PerCampaign
         }
 
         private class OpShinyLabel : OpLabel
@@ -95,6 +113,30 @@ namespace Allergies
             {
                 scale = new Vector2(width, 2f);
                 color = MenuColorEffect.rgbMediumGrey;
+            }
+        }
+
+        private class OpResourceSelector2 : OpResourceSelector
+        {
+            public OpResourceSelector2(ConfigurableBase config, Vector2 pos, float width) : base(config, pos, width)
+            {
+            }
+
+            public OpResourceSelector2(Configurable<string> config, Vector2 pos, float width, SpecialEnum listType) : base(config, pos, width, listType)
+            {
+            }
+
+            public override void GrafUpdate(float timeStacker)
+            {
+                base.GrafUpdate(timeStacker);
+                if (_rectList != null && !_rectList.isHidden)
+                {
+                    myContainer.MoveToFront();
+                    for (int i = 0; i < 9; i++)
+                    {
+                        _rectList.sprites[i].alpha = 1f;
+                    }
+                }
             }
         }
     }
