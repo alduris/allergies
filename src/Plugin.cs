@@ -164,9 +164,17 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(ReactionType.Explode, (player) => new ExplodeReaction(player.abstractCreature), 0);
         
         // Mod compatibility
-        if (ModManager.ActiveMods.Any(x => x.id == "lb-fgf-m4r-ik.modpack"))
+        try
         {
-            LBEntityPackCompat.Register();
+            // Need to try-catch this in case of type load errors
+            if (ModManager.ActiveMods.Any(x => x.id == "lb-fgf-m4r-ik.modpack"))
+            {
+                LBEntityPackCompat.Register();
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.LogError(e);
         }
 
         // Register remix menu
