@@ -10,6 +10,7 @@ namespace Allergies.Reactions
 
         public abstract bool IsStillActive { get; }
 
+        public int setCooldown = 200; // 5 seconds
         public bool slatedForDeletion = false;
         internal bool hasInitSprites = false;
 

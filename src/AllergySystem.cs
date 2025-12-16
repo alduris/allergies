@@ -222,8 +222,9 @@ namespace Allergies
                     Plugin.Logger.LogDebug($"Allergy trigger! \"{allergen.Name}\" for reaction \"{reactionType}\"");
 #endif
                     allActiveAllergies.Add(this);
-                    activeReactions.Add(reactionFactory.Invoke(player));
-                    allergyCooldown = 400; // 10 seconds
+                    Reaction reaction = reactionFactory.Invoke(player);
+                    activeReactions.Add(reaction);
+                    allergyCooldown = reaction.setCooldown;
                     return true;
                 }
                 return false;
@@ -258,6 +259,11 @@ namespace Allergies
             {
                 foreach (var reaction in activeReactions)
                 {
+                    if (!reaction.hasInitSprites)
+                    {
+                        reaction.hasInitSprites = true;
+                        reaction.InitiateSprites(sLeaser, rCam);
+                    }
                     reaction.DrawSprites(sLeaser, rCam, timeStacker, camPos);
                 }
             }

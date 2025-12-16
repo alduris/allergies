@@ -3,12 +3,17 @@ using UnityEngine;
 
 namespace Allergies.Reactions
 {
-    internal class SneezeReaction(AbstractCreature player) : Reaction(player)
+    internal class SneezeReaction : Reaction
     {
         private int timeLeft = 1200;
 
         private int sneezeCooldown = 40;
         private int sneezeWindup = 0;
+
+        public SneezeReaction(AbstractCreature player) : base(player)
+        {
+            setCooldown = 80; // 2 seconds
+        }
 
         public override bool IsStillActive => timeLeft > 0;
 

@@ -18,6 +18,8 @@ namespace Allergies.Reactions
             // Trim list if need be and add ourselves
             activeBigHeads.RemoveAll(x => x.abstractPlayer.world.game != abstractPlayer.world.game);
             activeBigHeads.Add(this);
+
+            setCooldown = 20; // 0.5 seconds
         }
 
         public override bool IsStillActive => ticksLeft > 0 || intensity > 0.01;
