@@ -5,7 +5,9 @@ using BepInEx;
 using BepInEx.Logging;
 using MoreSlugcats;
 using System;
+using System.Linq;
 using System.Security.Permissions;
+using Allergies.ModCompat;
 using Watcher;
 
 // Allows access to private members
@@ -160,6 +162,12 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(ReactionType.Anaphylaxis, (player) => new AnaphylaxisReaction(player.abstractCreature), 3);
         AllergySystem.Register(ReactionType.BigHead, (player) => new BigHeadReaction(player.abstractCreature), 1);
         AllergySystem.Register(ReactionType.Explode, (player) => new ExplodeReaction(player.abstractCreature), 0);
+        
+        // Mod compatibility
+        if (ModManager.ActiveMods.Any(x => x.id == "lb-fgf-m4r-ik.modpack"))
+        {
+            LBEntityPackCompat.Register();
+        }
 
         // Register remix menu
         MachineConnector.SetRegisteredOI("alduris.allergies", options);

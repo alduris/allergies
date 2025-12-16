@@ -27,10 +27,11 @@ namespace Allergies.Triggers
             if (eu && self.room != null)
             {
                 var myPos = self.firstChunk.pos;
+                var myRad = self.firstChunk.rad;
                 foreach (var obj in self.room.physicalObjects.SelectMany(x => x))
                 {
                     if (obj.abstractPhysicalObject.IsSameRippleLayer(self.abstractPhysicalObject.rippleLayer)
-                        && obj.bodyChunks.Any(x => Vector2.Distance(x.pos, myPos) < 60f)) // 3 tiles
+                        && obj.bodyChunks.Any(x => Vector2.Distance(x.pos, myPos) < 80f + x.rad + myRad)) // 4 tiles
                     {
                         AllergySystem.TriggerAllergy(self, obj, TriggerType.Airborne);
                     }

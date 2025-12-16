@@ -7,7 +7,10 @@ namespace Allergies.Allergens
         private readonly AbstractPhysicalObject.AbstractObjectType itemType = itemType;
         private readonly int iconIntData = iconIntData;
 
-        public override string Name => Custom.rainWorld.inGameTranslator.TryTranslate($"objecttype-{itemType.value}", out string translated) ? translated : itemType.value;
+        public override string Name =>
+            (Custom.rainWorld.inGameTranslator.TryTranslate($"objecttype-{itemType.value}", out string translated)
+                ? translated
+                : itemType.value) + " (eating)";
 
         public override FSprite GetIcon()
         {

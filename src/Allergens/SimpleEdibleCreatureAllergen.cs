@@ -7,7 +7,11 @@ namespace Allergies.Allergens
         private readonly CreatureTemplate.Type _creatureType = creatureType;
         private readonly int _iconIntData = iconIntData;
 
-        public override string Name => Custom.rainWorld.inGameTranslator.TryTranslate($"creaturetype-{_creatureType.value}", out string translated) ? translated : _creatureType.value;
+        public override string Name =>
+            (Custom.rainWorld.inGameTranslator.TryTranslate($"creaturetype-{_creatureType.value}",
+                out string translated)
+                ? translated
+                : _creatureType.value) + " (eating)";
 
         public override FSprite GetIcon()
         {
