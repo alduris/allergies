@@ -4,11 +4,6 @@
     {
         public string Name => "Lizard Spit";
 
-        public bool Equals(IAllergen other)
-        {
-            return other is LizardLickAllergen;
-        }
-
         public FSprite GetIcon()
         {
             return null!;

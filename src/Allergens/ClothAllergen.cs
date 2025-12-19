@@ -7,11 +7,6 @@ namespace Allergies.Allergens
     {
         public string Name => "Cloth";
 
-        public bool Equals(IAllergen other)
-        {
-            return other is ClothAllergen;
-        }
-
         public FSprite GetIcon()
         {
             return null!;

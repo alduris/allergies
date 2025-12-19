@@ -4,11 +4,6 @@
     {
         public string Name => "Scavenger Fur";
 
-        public bool Equals(IAllergen other)
-        {
-            return other is ScavengerAllergen;
-        }
-
         public FSprite GetIcon()
         {
             var data = new IconSymbol.IconSymbolData(CreatureTemplate.Type.Scavenger, null, 0);

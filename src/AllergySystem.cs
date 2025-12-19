@@ -18,7 +18,7 @@ namespace Allergies
         public static void Register(IAllergen allergen)
         {
             if (allergen is null) throw new ArgumentNullException(nameof(allergen));
-            if (!allAllergens.Contains(allergen))
+            if (allAllergens.All(x => x.Name != allergen.Name))
             {
                 allAllergens.Add(allergen);
             }

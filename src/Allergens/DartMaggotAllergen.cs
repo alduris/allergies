@@ -4,11 +4,6 @@
     {
         public string Name => "Dart Maggot";
 
-        public bool Equals(IAllergen other)
-        {
-            return other is DartMaggotAllergen;
-        }
-
         public FSprite GetIcon()
         {
             var data = new IconSymbol.IconSymbolData(CreatureTemplate.Type.SpitterSpider, null, 0);

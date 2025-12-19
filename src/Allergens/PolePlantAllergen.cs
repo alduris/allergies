@@ -6,11 +6,6 @@ namespace Allergies.Allergens
     {
         public string Name => Custom.rainWorld.inGameTranslator.Translate($"creaturetype-PoleMimic");
 
-        public bool Equals(IAllergen other)
-        {
-            return other is PolePlantAllergen;
-        }
-
         public FSprite GetIcon()
         {
             var data = new IconSymbol.IconSymbolData(CreatureTemplate.Type.PoleMimic, null, 0);

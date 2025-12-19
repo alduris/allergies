@@ -2,7 +2,7 @@
 
 namespace Allergies.Allergens
 {
-    public interface IAllergen : IEquatable<IAllergen>
+    public interface IAllergen
     {
         public string Name { get; }
 

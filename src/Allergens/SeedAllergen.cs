@@ -6,11 +6,6 @@ namespace Allergies.Allergens
     {
         public string Name => Custom.rainWorld.inGameTranslator.Translate("objecttype-SeedCob");
 
-        public bool Equals(IAllergen other)
-        {
-            return other is SeedAllergen;
-        }
-
         public FSprite GetIcon()
         {
             return new FSprite(ItemSymbol.SpriteNameForItem(AbstractPhysicalObject.AbstractObjectType.SeedCob, 0))

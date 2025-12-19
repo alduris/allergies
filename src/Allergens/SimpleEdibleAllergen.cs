@@ -6,11 +6,6 @@ namespace Allergies.Allergens
     {
         public abstract string Name { get; }
 
-        public bool Equals(IAllergen other)
-        {
-            return other is SimpleEdibleAllergen<T>;
-        }
-
         public abstract FSprite GetIcon();
 
         public virtual bool MatchesCriteria(PhysicalObject? thing, TriggerType trigger)

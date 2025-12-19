@@ -7,11 +7,6 @@ namespace Allergies.ModCompat.Allergens
 {
     internal class LBWaterBlobAllergen : IAllergen
     {
-        public bool Equals(IAllergen other)
-        {
-            return other is LBWaterBlobAllergen;
-        }
-
         public string Name => "Water Blob";
         public FSprite GetIcon()
         {

@@ -6,11 +6,6 @@ namespace Allergies.Allergens
     {
         public string Name => "Spider Bite";
 
-        public bool Equals(IAllergen other)
-        {
-            return other is SpiderBiteAllergen;
-        }
-
         public FSprite GetIcon()
         {
             var data = new IconSymbol.IconSymbolData(CreatureTemplate.Type.BigSpider, null, 0);

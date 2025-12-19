@@ -6,11 +6,6 @@ namespace Allergies.Allergens
     {
         public string Name => "Void Essence";
 
-        public bool Equals(IAllergen other)
-        {
-            return other is VoidAllergen;
-        }
-
         public FSprite GetIcon()
         {
             return null!;

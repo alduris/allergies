@@ -4,11 +4,6 @@ namespace Allergies.Allergens
 {
     internal class RotAllergen : IAllergen
     {
-        public bool Equals(IAllergen other)
-        {
-            return other is RotAllergen;
-        }
-
         public string Name => "Rot";
         public FSprite GetIcon()
         {
