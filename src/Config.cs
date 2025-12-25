@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Allergies.Allergens;
 using Allergies.Reactions;
 using Menu;
 using Menu.Remix.MixedUI;
@@ -16,6 +17,14 @@ namespace Allergies
 
         private static string SafeName(string name) => Regex.Replace(name, @"[^\w\d_]", "_").ToLowerInvariant();
 
+        internal static void Register(IAllergen allergen)
+        {
+            if (!allergenEnabledConfig.ContainsKey(allergen.Name))
+            {
+                allergenEnabledConfig[allergen.Name] = instance.config.Bind($"AllergenEnabled_{SafeName(allergen.Name)}", true);
+            }
+        }
+
         internal static void Register(ReactionType type, int initialWeight)
         {
             if (!reactionWeightConfig.ContainsKey(type))
@@ -25,6 +34,7 @@ namespace Allergies
         }
 
         private static readonly Dictionary<ReactionType, Configurable<int>> reactionWeightConfig = [];
+        private static readonly Dictionary<string, Configurable<bool>> allergenEnabledConfig = [];
         private static Configurable<int> maxAllergensConfig = null!;
         private static Configurable<bool> alwaysMaxAllergensConfig = null!;
         private static Configurable<bool> showAllergensConfig = null!;
@@ -63,17 +73,21 @@ namespace Allergies
                 );
 
             // Basic configs
+            UIfocusable temp;
             sb.AddItems(
                 new OpLabel(new Vector2(0f, 500f), new Vector2(600f, 30f), "SETTINGS", FLabelAlignment.Center, true),
 
-                new OpLabel(150f, 470f, "Maximum active allergies:", false),
-                new OpDragger(maxAllergensConfig, new Vector2(426f, 470f)),
-                new OpLabel(150f, 440f, "Always use maximum allergies:", false),
-                new OpCheckBox(alwaysMaxAllergensConfig, new Vector2(426f, 440f)),
-                new OpLabel(150f, 410f, "Show allergens:", false),
-                new OpCheckBox(showAllergensConfig, new Vector2(426f, 410f)),
-                new OpLabel(150f, 380f, "Randomization frequency:", false),
-                new OpResourceSelector2(playStyleConfig, new Vector2(310f, 380f), 140f),
+                temp = new OpDragger(maxAllergensConfig, new Vector2(426f, 470f)),
+                new OpLabel(150f, 470f, "Maximum active allergies:", false) { bumpBehav = temp.bumpBehav },
+                
+                temp = new OpCheckBox(alwaysMaxAllergensConfig, new Vector2(426f, 440f)),
+                new OpLabel(150f, 440f, "Always use maximum allergies:", false) { bumpBehav = temp.bumpBehav },
+                
+                temp = new OpCheckBox(showAllergensConfig, new Vector2(426f, 410f)),
+                new OpLabel(150f, 410f, "Show allergens:", false) { bumpBehav = temp.bumpBehav },
+                
+                temp = new OpResourceSelector2(playStyleConfig, new Vector2(310f, 380f), 140f),
+                new OpLabel(150f, 380f, "Randomization frequency:", false) { bumpBehav = temp.bumpBehav },
 
                 new OpRule(new Vector2(10f, 370f), 580f)
                 );
@@ -84,11 +98,45 @@ namespace Allergies
             foreach (var (type, config) in reactionWeightConfig.OrderBy(x => x.Key.ToString(), StringComparer.OrdinalIgnoreCase))
             {
                 y -= 30f;
-                sb.AddItems(new OpLabel(150f, y, $"{type}:"), new OpDragger(config, new Vector2(426f, y)));
+                var dragger = new OpDragger(config, new Vector2(426f, y));
+                sb.AddItems(new OpLabel(150f, y, $"{type}:") { bumpBehav = dragger.bumpBehav }, dragger);
+            }
+
+            y -= 10f;
+            sb.AddItems(new OpRule(new Vector2(10f, y), 580f));
+            
+            // Allergens
+            y -= 40f;
+            sb.AddItems(new OpLabel(new Vector2(0f, y), new Vector2(600f, 30f), "ENABLED ALLERGENS", FLabelAlignment.Center, true));
+            y -= 10f;
+
+            const float TOTAL_WIDTH = 580f;
+            const float SPACE_WIDTH = 22f;
+            const float LEFT_OFFSET = 600f / 2f - TOTAL_WIDTH / 2f;
+            float columnsTop = y;
+            int totalColumns = Math.Max(1, Mathf.FloorToInt((TOTAL_WIDTH + SPACE_WIDTH) / (SPACE_WIDTH + allergenEnabledConfig.Keys.Max(x => LabelTest.GetWidth(x) + 34f))));
+            int column = 0;
+            float columnWidth = (TOTAL_WIDTH - SPACE_WIDTH * (totalColumns - 1)) / totalColumns;
+            foreach (var (allergen, config) in allergenEnabledConfig.OrderBy(x => x.Key, StringComparer.OrdinalIgnoreCase))
+            {
+                if (column == 0) y -= 30f;
+                float columnOffset = LEFT_OFFSET + (columnWidth + SPACE_WIDTH) * column;
+                var cb = new OpCheckBox(config, new Vector2(columnOffset + columnWidth - 24f, y));
+                sb.AddItems(new OpLabel(columnOffset, y, $"{allergen}:") { bumpBehav = cb.bumpBehav }, cb);
+
+                column = (column + 1) % totalColumns;
+            }
+            
+            // Allergen column bars
+            for (int i = 0; i < totalColumns - 1; i++)
+            {
+                float x = LEFT_OFFSET + columnWidth * (i + 1) + SPACE_WIDTH * i + 10f;
+                sb.AddItems(new OpRule(new Vector2(x, y), columnsTop - y, true));
             }
 
             // Set height for scrolling
-            sb.SetContentSize(600f - y);
+            sb.SetContentSize(610f - y);
+            sb.ScrollToTop();
         }
 
         public enum PlayStyle
@@ -109,9 +157,9 @@ namespace Allergies
 
         private class OpRule : OpImage
         {
-            public OpRule(Vector2 pos, float width) : base(pos, "pixel")
+            public OpRule(Vector2 pos, float size, bool vertical = false) : base(pos, "pixel")
             {
-                scale = new Vector2(width, 2f);
+                scale = vertical ? new Vector2(2f, size) : new Vector2(size, 2f);
                 color = MenuColorEffect.rgbMediumGrey;
             }
         }

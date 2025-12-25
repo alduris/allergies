@@ -22,6 +22,7 @@ namespace Allergies
             {
                 allAllergens.Add(allergen);
             }
+            Config.Register(allergen);
         }
 
         public static void Register(ReactionType type, Func<Player, Reaction> factory, int defaultWeight = 3)
