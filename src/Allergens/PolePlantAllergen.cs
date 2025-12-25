@@ -4,7 +4,7 @@ namespace Allergies.Allergens
 {
     internal class PolePlantAllergen : IAllergen
     {
-        public string Name => Custom.rainWorld.inGameTranslator.Translate($"creaturetype-PoleMimic");
+        public string Name => Custom.rainWorld.inGameTranslator.Translate($"creaturetype-PoleMimic") + " (touch)";
 
         public FSprite GetIcon()
         {

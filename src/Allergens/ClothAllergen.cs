@@ -5,7 +5,7 @@ namespace Allergies.Allergens
 {
     internal class ClothAllergen : IAllergen
     {
-        public string Name => "Cloth";
+        public string Name => "Cloth (touch)";
 
         public FSprite GetIcon()
         {

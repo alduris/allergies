@@ -4,7 +4,7 @@ namespace Allergies.Allergens
 {
     internal class RotAllergen : IAllergen
     {
-        public string Name => "Rot";
+        public string Name => "Rot (touch)";
         public FSprite GetIcon()
         {
             var data = new IconSymbol.IconSymbolData(CreatureTemplate.Type.DaddyLongLegs, null, 0);

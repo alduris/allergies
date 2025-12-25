@@ -2,7 +2,7 @@
 {
     internal class CoralAllergen : IAllergen
     {
-        public string Name => "Coral Bits";
+        public string Name => "Coral Bits (touch)";
 
         public FSprite GetIcon()
         {

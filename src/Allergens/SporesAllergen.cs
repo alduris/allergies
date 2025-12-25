@@ -1,10 +1,8 @@
-﻿using RWCustom;
-
-namespace Allergies.Allergens
+﻿namespace Allergies.Allergens
 {
     internal class SporesAllergen : IAllergen
     {
-        public string Name => Custom.rainWorld.inGameTranslator.Translate("objecttype-PuffBall");
+        public string Name => "Spores";
 
         public FSprite GetIcon()
         {
