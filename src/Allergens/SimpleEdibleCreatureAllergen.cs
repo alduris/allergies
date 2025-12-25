@@ -11,7 +11,7 @@ namespace Allergies.Allergens
             (Custom.rainWorld.inGameTranslator.TryTranslate($"creaturetype-{_creatureType.value}",
                 out string translated)
                 ? translated
-                : _creatureType.value) + " (eating)";
+                : _creatureType.value) + " (eat)";
 
         public override FSprite GetIcon()
         {

@@ -10,7 +10,7 @@ namespace Allergies.Allergens
         public override string Name =>
             (Custom.rainWorld.inGameTranslator.TryTranslate($"objecttype-{itemType.value}", out string translated)
                 ? translated
-                : itemType.value) + " (eating)";
+                : itemType.value) + " (eat)";
 
         public override FSprite GetIcon()
         {

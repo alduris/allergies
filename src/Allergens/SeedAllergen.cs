@@ -4,7 +4,7 @@ namespace Allergies.Allergens
 {
     internal class SeedAllergen : IAllergen
     {
-        public string Name => Custom.rainWorld.inGameTranslator.Translate("objecttype-SeedCob");
+        public string Name => Custom.rainWorld.inGameTranslator.Translate("objecttype-SeedCob") + " (eat)";
 
         public FSprite GetIcon()
         {
