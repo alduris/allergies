@@ -175,6 +175,10 @@ sealed class Plugin : BaseUnityPlugin
             {
                 LBEntityPackCompat.Register();
             }
+            if (ModManager.ActiveMods.Any(x => x.id == "t1ws.moreflora"))
+            {
+                MoreFloraCompat.Register();
+            }
 
             // Also shaders
             AssetBundle bundle = AssetBundle.LoadFromFile(AssetManager.ResolveFilePath("shaders/allergies"));
