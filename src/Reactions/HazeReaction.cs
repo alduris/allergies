@@ -114,7 +114,7 @@ namespace Allergies.Reactions
                     scaleY = rCam.game.rainWorld.options.ScreenSize.y,
                     x = 0,
                     y = 0,
-                    color = new Color(1.25f, 1f, 0f),
+                    color = new Color(1.25f, Random.value, 0f),
                     alpha = 0,
                 }];
 
