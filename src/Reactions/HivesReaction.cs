@@ -57,7 +57,6 @@ namespace Allergies.Reactions
             {
                 if (hivesOverlay.slatedForDeletetion)
                 {
-                    Plugin.Logger.LogDebug("Hives overlay slated for deletion!");
                     _overlays.Remove(graphics);
                 }
                 else if (hivesOverlay.room == null && player.room != null)
@@ -82,7 +81,6 @@ namespace Allergies.Reactions
             }
             else
             {
-                Plugin.Logger.LogDebug($"Destroying because out of time");
                 Destroy();
             }
         }
@@ -98,7 +96,6 @@ namespace Allergies.Reactions
         public override void Destroy()
         {
             base.Destroy();
-            Plugin.Logger.LogDebug("Destroying hives reaction");
             _instances.Remove(abstractPlayer);
         }
 
@@ -108,7 +105,6 @@ namespace Allergies.Reactions
 
             public HivesOverlay(HivesReaction ownerReaction, Creature ownerCrit, RoomCamera.SpriteLeaser ownerSleaser) : base(ownerCrit, ownerSleaser)
             {
-                Plugin.Logger.LogDebug($"Created hives overlay for player {ownerCrit.abstractCreature.ID}");
                 reaction = ownerReaction;
             }
 
@@ -124,7 +120,6 @@ namespace Allergies.Reactions
             public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
             {
                 base.InitiateSprites(sLeaser, rCam);
-                Plugin.Logger.LogDebug("Creating hives sprites");
                 foreach (var sprite in sLeaser.sprites)
                 {
                     sprite.shader = rCam.game.rainWorld.Shaders["HivesAllergy"];
@@ -231,12 +226,6 @@ namespace Allergies.Reactions
                         dst.alpha = alpha;
                         break;
                 }
-            }
-
-            public override void Destroy()
-            {
-                base.Destroy();
-                Plugin.Logger.LogDebug("Hives reaction actually destroyed!");
             }
         }
     }

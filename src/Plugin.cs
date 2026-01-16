@@ -166,6 +166,7 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(ReactionType.BigHead, (player) => new BigHeadReaction(player.abstractCreature), 1);
         AllergySystem.Register(ReactionType.Explode, (player) => new ExplodeReaction(player.abstractCreature), 0);
         AllergySystem.Register(ReactionType.Hives, (player) => new HivesReaction(player.abstractCreature), 4);
+        AllergySystem.Register(ReactionType.Haze, (player) => new HazeReaction(player.abstractCreature), 3);
         
         try
         {
@@ -178,6 +179,7 @@ sealed class Plugin : BaseUnityPlugin
             // Also shaders
             AssetBundle bundle = AssetBundle.LoadFromFile(AssetManager.ResolveFilePath("shaders/allergies"));
             Custom.rainWorld.Shaders["HivesAllergy"] = FShader.CreateShader("HivesAllergy", bundle.LoadAsset<Shader>("assets/shaders/HivesAllergy.shader"));
+            Custom.rainWorld.Shaders["HazeAllergy"] = FShader.CreateShader("HazeAllergy", bundle.LoadAsset<Shader>("assets/shaders/HazeAllergy.shader"));
         }
         catch (Exception e)
         {
