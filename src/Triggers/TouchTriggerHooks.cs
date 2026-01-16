@@ -18,6 +18,7 @@ namespace Allergies.Triggers
                 On.LizardTongue.Update += LizardTongue_Update;
                 On.VoidSea.VoidSeaScene.UpdatePlayerInVoidSea += VoidSeaScene_UpdatePlayerInVoidSea;
                 On.DaddyCorruption.Update += DaddyCorruption_Update;
+                On.SporePlant.AttachedBee.ctor += AttachedBee_ctor;
             }
             catch (Exception e)
             {
@@ -96,6 +97,15 @@ namespace Allergies.Triggers
                         }
                     }
                 }
+            }
+        }
+
+        private static void AttachedBee_ctor(On.SporePlant.AttachedBee.orig_ctor orig, SporePlant.AttachedBee self, Room room, AbstractPhysicalObject abstrObj, BodyChunk attachedChunk, Vector2 beePos, Vector2 beeDir, float life, float lifeTime, bool beeBosting)
+        {
+            orig(self, room, abstrObj, attachedChunk, beePos, beeDir, life, lifeTime, beeBosting);
+            if (attachedChunk?.owner is Player p)
+            {
+                AllergySystem.TriggerAllergy(p, self, TriggerType.Impale);
             }
         }
     }

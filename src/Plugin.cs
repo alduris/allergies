@@ -9,6 +9,8 @@ using System.Linq;
 using System.Security.Permissions;
 using Allergies.ModCompat;
 using Watcher;
+using UnityEngine;
+using RWCustom;
 
 // Allows access to private members
 #pragma warning disable CS0618
@@ -120,6 +122,7 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(new SimpleAirborneCreatureAllergen<Deer>(CreatureTemplate.Type.Deer));
         AllergySystem.Register(new SimpleAirborneCreatureAllergen<Scavenger>(CreatureTemplate.Type.Scavenger));
 
+        AllergySystem.Register(new BeesAllergen());
         AllergySystem.Register(new ClothAllergen());
         AllergySystem.Register(new CoralAllergen());
         AllergySystem.Register(new DartMaggotAllergen());
@@ -162,15 +165,19 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(ReactionType.Anaphylaxis, (player) => new AnaphylaxisReaction(player.abstractCreature), 3);
         AllergySystem.Register(ReactionType.BigHead, (player) => new BigHeadReaction(player.abstractCreature), 1);
         AllergySystem.Register(ReactionType.Explode, (player) => new ExplodeReaction(player.abstractCreature), 0);
+        AllergySystem.Register(ReactionType.Hives, (player) => new HivesReaction(player.abstractCreature), 4);
         
-        // Mod compatibility
         try
         {
-            // Need to try-catch this in case of type load errors
+            // Mod compatibility
             if (ModManager.ActiveMods.Any(x => x.id == "lb-fgf-m4r-ik.modpack"))
             {
                 LBEntityPackCompat.Register();
             }
+
+            // Also shaders
+            AssetBundle bundle = AssetBundle.LoadFromFile(AssetManager.ResolveFilePath("shaders/allergies"));
+            Custom.rainWorld.Shaders["HivesAllergy"] = FShader.CreateShader("HivesAllergy", bundle.LoadAsset<Shader>("assets/shaders/HivesAllergy.shader"));
         }
         catch (Exception e)
         {
