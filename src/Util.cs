@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using RWCustom;
 using UnityEngine;
 
 namespace Allergies
@@ -38,6 +39,12 @@ namespace Allergies
                 count++;
             }
             return sum / count;
+        }
+
+        public static HSLColor ToHSL(this Color color)
+        {
+            var hsl = Custom.RGB2HSL(color);
+            return new HSLColor(hsl.x, hsl.y, hsl.z);
         }
     }
 }

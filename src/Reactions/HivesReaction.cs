@@ -127,8 +127,27 @@ namespace Allergies.Reactions
                 Plugin.Logger.LogDebug("Creating hives sprites");
                 foreach (var sprite in sLeaser.sprites)
                 {
-                    //sprite.element = Futile.atlasManager.GetElementWithName("Futile_White");
                     sprite.shader = rCam.game.rainWorld.Shaders["HivesAllergy"];
+                }
+
+                // Adjust tail
+                TriangleMesh tailSprite = (sLeaser.sprites[2] as TriangleMesh)!;
+                PlayerGraphics pg = (ownerCrit.graphicsModule as PlayerGraphics)!;
+                Color seed = tailSprite.verticeColors[0]; // verticeColors[0] has wrong calculations that makes the uv 0 + the seed, aka just the seed
+
+                // First: fix the uvs for the tail by reversing the order of the green channel
+                for (int i = 0; i < tailSprite.verticeColors.Length / 2; i++)
+                {
+                    int j = tailSprite.verticeColors.Length - 1 - i;
+                    (tailSprite.verticeColors[i].g, tailSprite.verticeColors[j].g) = (tailSprite.verticeColors[j].g, tailSprite.verticeColors[i].g);
+                }
+
+                // Then add some scaling multipliers to fix weird stuff with mud sprites
+                float tailBaseRad = pg.tail[0].rad * 0.5f;
+                for (int i = 0; i < tailSprite.verticeColors.Length; i++)
+                {
+                    tailSprite.verticeColors[i].r = (tailSprite.verticeColors[i].r - seed.r) * tailBaseRad + seed.r;
+                    tailSprite.verticeColors[i].g = (tailSprite.verticeColors[i].g - seed.g) * tailBaseRad + seed.g;
                 }
             }
 
@@ -150,7 +169,7 @@ namespace Allergies.Reactions
                     {
                         alpha = (reaction.fadeOutTime + 1f - timeStacker) / reaction.totalFadeOutTime;
                     }
-                    alpha *= 0.333f;
+                    alpha *= 0.2f;
 
                     var array = MuddableSprites();
                     for (int i = 0; i < sLeaser.sprites.Length; i++)

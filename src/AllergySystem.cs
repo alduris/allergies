@@ -124,9 +124,10 @@ namespace Allergies
 
                 if (Config.ShowAllergens)
                 {
+                    var playerHSL = player.ShortCutColor().ToHSL();
                     room.AddObject(new AllergyDisplay(room, player.abstractCreature,
                         allergies.Select(x => x.allergen).ToList(),
-                        player.ShortCutColor()));
+                        (playerHSL with { lightness = Mathf.Lerp(0.55f, 1f, playerHSL.lightness) }).rgb));
                 }
             }
         }
