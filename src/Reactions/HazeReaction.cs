@@ -1,10 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Allergies.Reactions
 {
     internal class HazeReaction : Reaction
     {
-        private Haze visuals = null!;
+        private static WeakReference<HazeReaction>? activeHazeReaction;
 
         private int fadeInTime;
         private int activeTime;
@@ -12,35 +14,25 @@ namespace Allergies.Reactions
         private readonly int totalFadeInTime;
         private readonly int totalFadeOutTime;
 
+        private float lastIntensity;
+        private float intensity;
+        private FSprite? sprite;
+
         public HazeReaction(AbstractCreature player) : base(player)
         {
+            // Since Haze is a full screen effect, we don't care about disambiguating between players. If there is an active effect, no other effects can spawn.
+            if (activeHazeReaction != null && activeHazeReaction.TryGetTarget(out var reaction) && reaction.IsStillActive)
+            {
+                Destroy();
+                return;
+            }
+            activeHazeReaction = new WeakReference<HazeReaction>(this);
             totalFadeInTime = fadeInTime = Random.Range(3 * 40, 6 * 40);
-            totalFadeOutTime = fadeOutTime = Random.Range(3 * 40, 8 * 40);
+            totalFadeOutTime = fadeOutTime = Random.Range(6 * 40, 9 * 40);
             activeTime = Random.Range(15 * 40, 30 * 40);
         }
 
         public override bool IsStillActive => fadeInTime > 0 || activeTime > 0 || fadeOutTime >= 0;
-
-        public float Intensity
-        {
-            get
-            {
-                float value;
-                if (fadeInTime > 0)
-                {
-                    value = 1f - (float)fadeInTime / totalFadeInTime;
-                }
-                else if (activeTime > 0)
-                {
-                    value = 1f;
-                }
-                else
-                {
-                    value = (float)fadeOutTime / totalFadeOutTime;
-                }
-                return value;
-            }
-        }
 
         public override void Update()
         {
@@ -63,75 +55,46 @@ namespace Allergies.Reactions
                 Destroy();
             }
 
-            visuals ??= new Haze(this, player.room);
-            if (visuals.room != player.room)
+            lastIntensity = intensity;
+            if (fadeInTime > 0)
             {
-                visuals.MoveRoom(player.room);
+                intensity = 1f - (float)fadeInTime / totalFadeInTime;
             }
+            else if (activeTime > 0)
+            {
+                intensity = 1f;
+            }
+            else
+            {
+                intensity = (float)fadeOutTime / totalFadeOutTime;
+            }
+        }
+
+        public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+        {
+            base.InitiateSprites(sLeaser, rCam);
+            sprite = new FSprite("Futile_White")
+            {
+                shader = rCam.game.rainWorld.Shaders["HazeAllergy"],
+                scaleX = rCam.game.rainWorld.options.ScreenSize.x,
+                scaleY = rCam.game.rainWorld.options.ScreenSize.y,
+                x = 0,
+                y = 0,
+                color = new Color(1.25f, Random.value, 0f),
+                alpha = 0,
+            };
+            rCam.ReturnFContainer("Bloom").AddChild(sprite);
         }
 
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
+            sprite!.alpha = Mathf.Lerp(lastIntensity, intensity, timeStacker);
         }
 
-        private class Haze : CosmeticSprite
+        public override void Destroy()
         {
-            private float lastIntensity;
-            private float intensity;
-            private readonly HazeReaction reaction;
-
-            public Haze(HazeReaction reaction, Room room)
-            {
-                this.room = room;
-                this.reaction = reaction;
-                room.AddObject(this);
-            }
-
-            public override void Update(bool eu)
-            {
-                base.Update(eu);
-                lastIntensity = intensity;
-                intensity = reaction.Intensity;
-                if (reaction.slatedForDeletion)
-                {
-                    Destroy();
-                }
-            }
-
-            public void MoveRoom(Room newRoom)
-            {
-                room.RemoveObject(this);
-                room = newRoom;
-                room.AddObject(this);
-            }
-
-            public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
-            {
-                sLeaser.sprites = [new FSprite("Futile_White")
-                {
-                    shader = rCam.game.rainWorld.Shaders["HazeAllergy"],
-                    scaleX = rCam.game.rainWorld.options.ScreenSize.x,
-                    scaleY = rCam.game.rainWorld.options.ScreenSize.y,
-                    x = 0,
-                    y = 0,
-                    color = new Color(1.25f, Random.value, 0f),
-                    alpha = 0,
-                }];
-
-                base.InitiateSprites(sLeaser, rCam);
-                AddToContainer(sLeaser, rCam, null!);
-            }
-
-            public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
-            {
-                rCam.ReturnFContainer("Bloom").AddChild(sLeaser.sprites[0]);
-            }
-
-            public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
-            {
-                sLeaser.sprites[0].alpha = Mathf.Lerp(lastIntensity, intensity, timeStacker);
-                base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
-            }
+            base.Destroy();
+            sprite?.RemoveFromContainer();
         }
     }
 }
