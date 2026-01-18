@@ -113,12 +113,10 @@ namespace Allergies
                 var allergies = RandomAllergies();
                 activeAllergies.Add(player.abstractCreature, allergies);
 
-#if DEBUG
                 foreach (var allergy in allergies)
                 {
                     Plugin.Logger.LogDebug($"{player.abstractCreature.ID} has allergy \"{allergy.allergen.Name}\" ({allergy.allergen.GetType().FullName}) with reaction {allergy.reactionType}");
                 }
-#endif
 
                 Random.state = oldState;
 
