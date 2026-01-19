@@ -48,6 +48,8 @@ namespace Allergies
         public static int WeightOf(ReactionType type) => reactionWeightConfig.TryGetValue(type, out var weight) ? weight.Value : 0;
         public static IEnumerable<KeyValuePair<ReactionType, int>> AllWeights() => reactionWeightConfig.Select(x => new KeyValuePair<ReactionType, int>(x.Key, WeightOf(x.Key)));
 
+        public static bool Enabled(IAllergen allergen) => allergenEnabledConfig.TryGetValue(allergen.Name, out var config) && config.Value;
+
         public Config()
         {
             instance ??= this;

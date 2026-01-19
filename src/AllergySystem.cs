@@ -58,11 +58,12 @@ namespace Allergies
             return [];
         }
 
+        private static int seedCounter;
         internal static void Initiate(RainWorldGame game, Player player, Room room)
         {
             if (!activeAllergies.TryGetValue(player.abstractCreature, out _))
             {
-                int seed = new System.Random().Next(); // pick a default random seed
+                int seed = unchecked(new System.Random().Next() + player.abstractCreature.ID.number + seedCounter++); // pick a default random seed
                 
                 if (game.IsStorySession)
                 {
@@ -132,7 +133,7 @@ namespace Allergies
 
         private static List<ActiveAllergy> RandomAllergies()
         {
-            List<IAllergen> unpickedAllergens = [.. allAllergens];
+            List<IAllergen> unpickedAllergens = [.. allAllergens.Where(Config.Enabled)];
             List<ReactionType> weightedReactions = [];
             foreach (var (type, weight) in Config.AllWeights())
             {
