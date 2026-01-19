@@ -17,14 +17,14 @@ namespace Allergies.Allergens
             if (trigger != TriggerType.Touch) return false;
 
             if (thing is MoonCloak) return true;
-            if (thing is Oracle oracle)
+            if (thing is Oracle oracle && oracle.graphicsModule is OracleGraphics oracleGraphics)
             {
-                var gowns = (oracle.graphicsModule as OracleGraphics)!.gowns;
+                var gowns = oracleGraphics.gowns;
                 return gowns != null && gowns.Any(x => x is not null);
             }
-            if (thing is Player otherPlayer)
+            if (thing is Player otherPlayer && otherPlayer.graphicsModule is PlayerGraphics playerGraphics)
             {
-                var gown = (otherPlayer.graphicsModule as PlayerGraphics)!.gown;
+                var gown = playerGraphics.gown;
                 return gown != null && gown.visible;
             }
             return false;
