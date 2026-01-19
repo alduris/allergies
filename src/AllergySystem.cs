@@ -63,7 +63,7 @@ namespace Allergies
         {
             if (!activeAllergies.TryGetValue(player.abstractCreature, out _))
             {
-                int seed = unchecked(new System.Random().Next() + player.abstractCreature.ID.number + seedCounter++); // pick a default random seed
+                int seed = unchecked(new System.Random().Next() + seedCounter++); // pick a default random seed
                 
                 if (game.IsStorySession)
                 {
