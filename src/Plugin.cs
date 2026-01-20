@@ -37,6 +37,7 @@ sealed class Plugin : BaseUnityPlugin
         // Basic hooks
         On.Player.NewRoom += Player_NewRoom;
         On.Player.Update += Player_Update;
+        On.ArenaGameSession.SpawnPlayers += ArenaGameSession_SpawnPlayers;
         On.RoomCamera.SpriteLeaser.Update += SpriteLeaser_Update;
         On.RainWorldGame.ShutDownProcess += RainWorldGame_ShutDownProcess;
         On.AbstractPhysicalObject.Destroy += AbstractPhysicalObject_Destroy;
@@ -61,6 +62,15 @@ sealed class Plugin : BaseUnityPlugin
     {
         orig(self, eu);
         AllergySystem.Update(self);
+    }
+
+    private void ArenaGameSession_SpawnPlayers(On.ArenaGameSession.orig_SpawnPlayers orig, ArenaGameSession self, Room room, System.Collections.Generic.List<int> suggestedDens)
+    {
+        orig(self, room, suggestedDens);
+        foreach (var player in self.Players)
+        {
+            AllergySystem.Initiate(self.game, (player.realizedCreature as Player)!, room);
+        }
     }
 
     private void SpriteLeaser_Update(On.RoomCamera.SpriteLeaser.orig_Update orig, RoomCamera.SpriteLeaser self, float timeStacker, RoomCamera rCam, UnityEngine.Vector2 camPos)

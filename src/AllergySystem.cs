@@ -61,7 +61,7 @@ namespace Allergies
         private static int seedCounter;
         internal static void Initiate(RainWorldGame game, Player player, Room room)
         {
-            if (!activeAllergies.TryGetValue(player.abstractCreature, out _))
+            if (player != null && !activeAllergies.TryGetValue(player.abstractCreature, out _))
             {
                 int seed = unchecked(new System.Random().Next() + seedCounter++); // pick a default random seed
                 

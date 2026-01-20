@@ -21,7 +21,8 @@ namespace Allergies.Reactions
         public HazeReaction(AbstractCreature player) : base(player)
         {
             // Since Haze is a full screen effect, we don't care about disambiguating between players. If there is an active effect, no other effects can spawn.
-            if (activeHazeReaction != null && activeHazeReaction.TryGetTarget(out var reaction) && reaction.IsStillActive)
+            // One exception to this is if the player is an NPC, whereupon we don't trigger the effect because that doesn't make sense.
+            if ((this.player != null && this.player.isNPC) || (activeHazeReaction != null && activeHazeReaction.TryGetTarget(out var reaction) && reaction.IsStillActive))
             {
                 Destroy();
                 return;
