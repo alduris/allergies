@@ -137,6 +137,7 @@ sealed class Plugin : BaseUnityPlugin
         AllergySystem.Register(new CoralAllergen());
         AllergySystem.Register(new DartMaggotAllergen());
         AllergySystem.Register(new LizardLickAllergen());
+        AllergySystem.Register(new MyceliaAllergen());
         AllergySystem.Register(new PolePlantAllergen());
         AllergySystem.Register(new RotAllergen());
         AllergySystem.Register(new SeedAllergen());
